@@ -1,314 +1,390 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rafik Shah - Resume</title>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0e0e0e;
-            color: #f5f5f5;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Learn MySQL — Step by Step</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Small animation helpers */
+    .fade-up { transform: translateY(12px); opacity: 0; transition: all 420ms ease; }
+    .fade-up.show { transform: translateY(0); opacity: 1; }
 
-        header {
-            background-color: #1a1a1a;
-            padding: 30px 20px;
-            text-align: center;
-            color: #03a9f4;
-        }
+    .codeblock { background: #0f172a; color: #e6eef8; border-radius: 8px; padding: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size: 0.95rem; overflow:auto }
 
-        header h1 {
-            font-size: 32px;
-            margin: 0;
-            color: #ffffff;
-        }
+    pre { margin: 0; }
 
-        header p {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #cccccc;
-        }
+    .pill { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.04); padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.8rem }
 
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
+    /* progress bar animation */
+    .progress-track { background: rgba(7, 89, 133, 0.08); border-radius: 999px; height: 8px; }
+    .progress-fill { background: linear-gradient(90deg,#06b6d4,#7c3aed); height: 8px; border-radius: 999px; width: 0%; transition: width 300ms ease; }
 
-        .contact-info ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-size: 14px;
-        }
-
-        .contact-info li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .contact-info li i {
-            color: #03a9f4;
-        }
-
-        .contact-info a {
-            color: #03a9f4;
-            text-decoration: none;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            margin: 20px;
-            gap: 20px;
-        }
-
-        .left-column,
-        .right-column {
-            background-color: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .left-column {
-            margin-bottom: 20px;
-        }
-
-        .left-column,
-        .right-column {
-            width: 100%;
-        }
-
-        h2 {
-            border-bottom: 2px solid #03a9f4;
-            padding-bottom: 5px;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .experience-item,
-        .education-item,
-        .project-item,
-        .skills-item,
-        .certification-item {
-            margin-bottom: 20px;
-        }
-
-        .experience-item h3,
-        .education-item h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #03a9f4;
-        }
-
-        .experience-item p,
-        .education-item p,
-        .project-item p {
-            margin: 5px 0;
-            color: #cccccc;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin-bottom: 10px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #1a1a1a;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #cccccc;
-        }
-
-        @media (min-width: 600px) {
-            .container {
-                flex-direction: row;
-                gap: 20px;
-            }
-
-            .left-column,
-            .right-column {
-                flex: 1;
-                min-width: 300px;
-            }
-
-            header h1 {
-                font-size: 42px;
-            }
-
-            header p {
-                font-size: 18px;
-            }
-
-            .contact-info ul {
-                flex-direction: row;
-                gap: 15px;
-                font-size: 16px;
-            }
-
-            h2 {
-                font-size: 28px;
-            }
-
-            .experience-item h3,
-            .education-item h3 {
-                font-size: 20px;
-            }
-        }
-    </style>
+    /* small responsive tweaks */
+    @media (min-width: 1024px) { .sidebar { position: sticky; top: 1.25rem } }
+  </style>
 </head>
-
-<body>
-    <header>
-        <h1>Rafik Shah</h1>
-        <p>AI, Data Science, and Machine Learning Enthusiast committed to driving innovation and delivering impactful solutions.</p>
-        <div class="contact-info">
-            <ul>
-                <li><i class="fas fa-phone-alt"></i>7028352298</li>
-                <li><i class="fas fa-envelope"></i> <a href="mailto:rafikshah3262@gmail.com">rafikshah3262@gmail.com</a></li>
-                <li><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/rafik-shah-179875209/" target="_blank">LinkedIn</a></li>
-                <li><i class="fab fa-github"></i> <a href="https://github.com/RAFIKSHA" target="_blank">GitHub</a></li>
-            </ul>
+<body class="bg-slate-900 text-slate-100 antialiased leading-relaxed">
+  <div class="max-w-7xl mx-auto p-4 lg:p-8">
+    <header class="mb-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl lg:text-3xl font-semibold">Learn MySQL — Step by Step</h1>
+        <p class="text-slate-400 mt-1">Simple, visual, and classroom friendly. Use the left menu to navigate modules. (Hindi notes included)</p>
+      </div>
+      <div class="w-48">
+        <div class="progress-track w-full rounded-lg">
+          <div id="progressFill" class="progress-fill"></div>
         </div>
+        <p id="progressText" class="text-xs text-slate-400 mt-1 text-right">Step 1 of 14</p>
+      </div>
     </header>
 
-    <div class="container">
-        <div class="left-column">
-            <section id="experience">
-                <h2>Experience</h2>
-                <div class="experience-item">
-                    <h3>Python Developer and Trainer</h3>
-                    <p><strong>Campus Credentials Pvt. Ltd. (Oct 2023 - Present)</strong></p>
-                    <ul>
-                        <li>Designed engaging lessons and hands-on activities for Python training.</li>
-                        <li>Monitored student progress through quizzes and projects, providing feedback for improvement.</li>
-                        <li>Kept up-to-date with Python developments to ensure relevant teaching content.</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Data Science and analysis virtual internship Internship</h3>
-                    <p><strong>Netzwerk Academy (April 2023 - Sep 2023)</strong></p>
-                    <ul>
-                        <li>Completed a 24-week AI-ML Virtual Internship with an Excellent grade.</li>
-                        <li>Proficient in Mathematics, Python, and various data science libraries; skilled in Machine Learning techniques and SQL.</li>
-                        <li>Worked on image classification and object detection projects.</li>
-                    </ul>
-                </div>
-                <div class="experience-item">
-                    <h3>Developer virtual experience program</h3>
-                    <p><strong>Accenture (may 2022 -sep 2022)</strong></p>
-                    <ul>
-                        <li>Completed a Developer Virtual Experience Program where I worked on industry-relevant projects, simulating real-world scenarios.        </li>
-                         <li>Gained practical experience in software development, including coding, debugging, and testing applications.</li>
-                
-                        <li>Developed a Movie Recommendation System as an internship project.</li>
-                    </ul>
-                </div>
-            </section>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- Sidebar -->
+      <aside class="sidebar lg:col-span-1 bg-slate-800/30 p-4 rounded-lg">
+        <nav class="space-y-2">
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="0">1. Introduction</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="1">2. Install & Start</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="2">3. Create DB & Tables</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="3">4. INSERT & SELECT</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="4">5. WHERE, AND/OR/NOT</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="5">6. ORDER BY & LIMIT</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="6">7. Aggregate Functions</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="7">8. GROUP BY & HAVING</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="8">9. Joins (INNER/LEFT/RIGHT)</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="9">10. Subqueries & EXISTS</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="10">11. UPDATE & DELETE</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="11">12. Constraints & DDL</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="12">13. Practice Exercises</button>
+          <button class="module-btn w-full text-left p-2 rounded hover:bg-slate-700/40" data-index="13">14. Tips for Teachers</button>
+        </nav>
+      </aside>
 
-            <section id="education">
-                <h2>Education</h2>
-                <div class="education-item">
-                    <h3>M-Tech Information Technology</h3>
-                    <p><strong>Savitribai Phule Pune University (2024-pursuing)</strong></p>
-                    <p><strong>Siddhant College of Engineering, Pune</strong></p>
-                </div>
+      <!-- Main content -->
+      <main class="lg:col-span-3 bg-slate-800/20 p-6 rounded-lg">
+        <section id="moduleContainer" class="space-y-6">
 
-                <div class="education-item">
-                    <h3>B-Tech Computer Science and Engineering</h3>
-                    <p><strong>Dr. Babasaheb Ambedkar Technological University (2021-2024)</strong></p>
-                    <p><strong>CSMSS Chh. Shahu College of Engineering, Aurangabad</strong></p>
-                    <p>CGPA: 8.5</p>
-                </div>
+          <!-- Module templates (we will populate via JS) -->
 
-                <div class="education-item">
-                    <h3>SSC</h3>
-                    <p><strong>Swami Vivekanand Vidyalaya, Bhokardan</strong></p>
-                    <p><strong>State board of maharashtra (2017-2018)</strong></p>
-                    <p>Percentage Score:93.40%</p>
-                    <p>Completion Year: 2018</p>
-                </div>
-            </section>
+        </section>
+
+        <div class="mt-6 flex justify-between">
+          <button id="prevBtn" class="px-4 py-2 rounded bg-slate-700 hover:bg-slate-600">◀ Previous</button>
+          <div class="space-x-2">
+            <button id="showAll" class="px-4 py-2 rounded bg-emerald-600 hover:bg-emerald-500">Show All</button>
+            <button id="nextBtn" class="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-500">Next ▶</button>
+          </div>
         </div>
 
-        <div class="right-column">
-            <section id="projects">
-                <h2>Projects</h2>
-                <div class="project-item">
-                    <h3><strong>Movie Recommendation System</strong></h3>
-                    <p>Created a movie recommendation system in Python utilizing content-based filtering with TF-IDF to enhance recommendation accuracy based on movie features.</p>
-                <!--<p><a href="https://satyajeet1718.github.io/Portfolio/movie_recommendation.html" target="_blank">Link</a></p>-->
-                </div>
-                <div class="project-item">
-                    <h3><strong>Multi-Language Text Summarizer</strong></h3>
-                    <p>Python-based tool developed using NLTK designed to efficiently summarize text in multiple languages, including English, Marathi, and Mixed-Language (English, Marathi, and Hindi) with multiple reduction modes.</p>
-                   <!-- <p><a href="https://satyajeet1718.github.io/Portfolio/Multi-language_text_summerizer.html" target="_blank">Link</a></p>-->
-                </div>
-                <div class="project-item">
-                    <h3><strong>Real-Time Cryptocurrency Analyzer Website</strong></h3>
-                    <p>Developed a website for real-time cryptocurrency analysis as part of a group project. Collaborated with a team to incorporate features for trend visualization, current news, live price updates, and market insights.</p>
-                </div>
-            </section>
-
-            <section id="certifications">
-                <h2>Certified Courses</h2>
-                <ul>
-                    <li>Python (Beginner, Intermediate, Core)</li>
-                    <li>AI with Python</li>
-                    <li>TensorFlow Python</li>
-                    <li>Statistics for Data Science</li>
-                    <li>Data Visualization using Python</li>
-                    <li>Product Management</li>
-                    <li>Leadership and Management</li>
-                </ul>
-            </section>
-
-            <section id="skills">
-                <h2>Skills and Abilities</h2>
-                <ul>
-                    <li>Python Programming: Core java,Java-Script</li>
-                    <li>Data Structures and Algorithms (DSA)</li>
-                    <li>Database: MySQL,MongoDB</li>
-                    <li>Data Science and Data analytics : numpy,pandas,Matplotlib,seaborn,Scikit-learn,Excel,Powerbi</li>
-                    <li>Front end : Html,Css,React</li>
-                    <li>Back end :Django</li>
-                    <li>Version Control:Git</li>
-                    <li>Server and Deployment: Docker,AWS</li>
-                    <li>Leadershi,Communication,Team Collaboration,Adaptability</li>
-    
-                </ul>
-            </section>
-
-            <section id="languages">
-                <h2>Languages</h2>
-                <ul>
-                    <li>Proficient in English, Hindi, Marathi</li>
-                </ul>
-            </section>
-        </div>
+      </main>
     </div>
 
-    <footer>
-        <p>©2024 Rafik Shah. All rights reserved.</p>
-    </footer>
+    <footer class="mt-8 text-xs text-slate-500">Built for classroom teaching • Small animations for clarity • Export this HTML to share with students.</footer>
+  </div>
 
+  <script>
+    // Modules content (short, teachable, with code examples). Keep concise for classroom use.
+    const modules = [
+      {
+        title: 'Introduction',
+        note: 'What is MySQL and basic SQL concept — explain in simple words. (Hindi: MySQL ek RDBMS hai)',
+        html: `
+          <p class="text-slate-300">SQL (Structured Query Language) is used to communicate with relational databases. In class explain with a simple example: table = sheet in Excel.</p>
+          <p class="mt-3 text-slate-400">Objects we will use: <span class="pill">departments</span>, <span class="pill">courses</span>, <span class="pill">students</span>, <span class="pill">enrollments</span>.</p>
+        `
+      },
+      {
+        title: 'Install & Start',
+        note: 'How to install and start MySQL (quick commands).',
+        html: `
+          <p class="text-slate-300">Ubuntu/Linux:</p>
+          <div class="codeblock mt-2"><pre><code>sudo apt update
+sudo apt install mysql-server
+sudo systemctl start mysql
+sudo mysql -u root -p</code></pre></div>
+
+          <p class="text-slate-300 mt-3">Windows: Use MySQL installer and open MySQL Command Line Client or use <code>mysql -u root -p</code>.</p>
+        `
+      },
+      {
+        title: 'Create Database & Tables',
+        note: 'Create a simple college schema students, courses, departments, enrollments',
+        html: `
+          <p class="text-slate-300">Run these queries to create schema:</p>
+          <div class="codeblock mt-2"><pre><code>CREATE DATABASE college;
+USE college;
+
+CREATE TABLE departments (
+  dept_id INT PRIMARY KEY AUTO_INCREMENT,
+  dept_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE courses (
+  course_id INT PRIMARY KEY AUTO_INCREMENT,
+  course_name VARCHAR(100) NOT NULL,
+  dept_id INT,
+  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+
+CREATE TABLE students (
+  student_id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(60),
+  age INT,
+  dept_id INT,
+  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+
+CREATE TABLE enrollments (
+  enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+  student_id INT,
+  course_id INT,
+  enrollment_date DATE,
+  FOREIGN KEY (student_id) REFERENCES students(student_id),
+  FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+</code></pre></div>
+        `
+      },
+      {
+        title: 'INSERT & SELECT',
+        note: 'Insert sample data and basic SELECT queries',
+        html: `
+          <p class="text-slate-300">Insert sample data:</p>
+          <div class="codeblock mt-2"><pre><code>INSERT INTO departments (dept_name) VALUES ('Computer Science'), ('Mechanical');
+INSERT INTO courses (course_name, dept_id) VALUES ('Database Systems', 1), ('Thermodynamics', 2);
+INSERT INTO students (name, age, dept_id) VALUES ('Rahul', 20, 1), ('Priya', 21, 2);
+INSERT INTO enrollments (student_id, course_id, enrollment_date) VALUES (1, 1, '2024-01-10');
+
+SELECT * FROM students;
+SELECT name, age FROM students;</code></pre></div>
+        `
+      },
+      {
+        title: 'WHERE / AND / OR / NOT',
+        note: 'Filtering rows with conditions',
+        html: `
+          <div class="codeblock"><pre><code>-- WHERE
+SELECT * FROM students WHERE age &gt; 20;
+
+-- AND / OR / NOT
+SELECT * FROM students WHERE dept_id = 1 AND age &gt;= 18;
+SELECT * FROM students WHERE dept_id = 1 OR dept_id = 2;
+SELECT * FROM students WHERE NOT dept_id = 2;</code></pre></div>
+        `
+      },
+      {
+        title: 'ORDER BY & LIMIT',
+        note: 'Sort and limit result rows',
+        html: `
+          <div class="codeblock"><pre><code>SELECT * FROM students ORDER BY age ASC;
+SELECT * FROM students ORDER BY name DESC LIMIT 3;</code></pre></div>
+        `
+      },
+      {
+        title: 'Aggregate Functions (COUNT, SUM, AVG, MIN, MAX)',
+        note: 'Simple aggregates — explain with marks or age',
+        html: `
+          <p class="text-slate-300">Using students table:</p>
+          <div class="codeblock mt-2"><pre><code>SELECT COUNT(*) AS total_students FROM students;
+SELECT AVG(age) AS average_age FROM students;
+SELECT MIN(age) AS youngest, MAX(age) AS oldest FROM students;</code></pre></div>
+        `
+      },
+      {
+        title: 'GROUP BY & HAVING',
+        note: 'Group results and filter groups',
+        html: `
+          <div class="codeblock"><pre><code>SELECT dept_id, COUNT(*) AS total
+FROM students
+GROUP BY dept_id;
+
+-- HAVING
+SELECT dept_id, COUNT(*) AS total
+FROM students
+GROUP BY dept_id
+HAVING COUNT(*) &gt; 1;</code></pre></div>
+        `
+      },
+      {
+        title: 'Joins — INNER / LEFT / RIGHT',
+        note: 'Combine data from multiple tables',
+        html: `
+          <p class="text-slate-300">Inner join students with departments (show dept name):</p>
+          <div class="codeblock mt-2"><pre><code>-- INNER JOIN
+SELECT s.name, d.dept_name
+FROM students s
+JOIN departments d ON s.dept_id = d.dept_id;
+
+-- LEFT JOIN (students + any course if exists)
+SELECT s.name, c.course_name
+FROM students s
+LEFT JOIN enrollments e ON s.student_id = e.student_id
+LEFT JOIN courses c ON e.course_id = c.course_id;</code></pre></div>
+        `
+      },
+      {
+        title: 'Subqueries & EXISTS',
+        note: 'Use subqueries inside WHERE or with EXISTS',
+        html: `
+          <div class="codeblock"><pre><code>-- Subquery
+SELECT name FROM students
+WHERE dept_id IN (SELECT dept_id FROM departments WHERE dept_name = 'Computer Science');
+
+-- EXISTS
+SELECT name FROM students s
+WHERE EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id);</code></pre></div>
+        `
+      },
+      {
+        title: 'UPDATE & DELETE',
+        note: 'Modify or remove rows',
+        html: `
+          <div class="codeblock"><pre><code>-- UPDATE
+UPDATE students SET age = 22 WHERE name = 'Rahul';
+
+-- DELETE
+DELETE FROM students WHERE student_id = 10; -- careful with WHERE</code></pre></div>
+        `
+      },
+      {
+        title: 'Constraints & DDL (NOT NULL, UNIQUE, PK, FK)',
+        note: 'Explain constraints and ALTER TABLE',
+        html: `
+          <div class="codeblock"><pre><code>-- Example constraint when creating table
+CREATE TABLE example (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- ALTER add column
+ALTER TABLE students ADD COLUMN email VARCHAR(100);
+ALTER TABLE students MODIFY name VARCHAR(100) NOT NULL;</code></pre></div>
+        `
+      },
+      {
+        title: 'Practice Exercises',
+        note: 'Small tasks for students — show/hide answers',
+        html: `
+          <ol class="pl-5 list-decimal text-slate-300">
+            <li>Show all students in Computer Science department.</li>
+            <li>Find average age of students per department.</li>
+            <li>List students who are not enrolled in any course.</li>
+          </ol>
+
+          <button onclick="toggleAnswer()" class="mt-4 px-3 py-2 rounded bg-slate-700 hover:bg-slate-600">Show Answers</button>
+
+          <div id="answers" class="mt-3 hidden text-slate-200">
+            <pre class="codeblock"><code>-- 1
+SELECT s.name FROM students s JOIN departments d ON s.dept_id = d.dept_id WHERE d.dept_name = 'Computer Science';
+
+-- 2
+SELECT dept_id, AVG(age) AS avg_age FROM students GROUP BY dept_id;
+
+-- 3
+SELECT name FROM students s WHERE NOT EXISTS (SELECT 1 FROM enrollments e WHERE e.student_id = s.student_id);</code></pre>
+          </div>
+        `
+      },
+      {
+        title: 'Tips for Teachers',
+        note: 'How to present and classroom tips',
+        html: `
+          <ul class="text-slate-300 pl-5 list-disc">
+            <li>Start with schema design first (tables & relationships).</li>
+            <li>Use live terminal demos and explain errors — students learn by debugging.</li>
+            <li>Give 10–15 minute practice tasks in class after each module.</li>
+            <li>Use the provided exercises and encourage pair programming.</li>
+          </ul>
+        `
+      }
+    ];
+
+    const container = document.getElementById('moduleContainer');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+
+    let current = 0;
+
+    function renderModule(index) {
+      container.innerHTML = '';
+      const mod = modules[index];
+      const node = document.createElement('div');
+      node.className = 'fade-up show';
+      node.innerHTML = `
+        <h2 class="text-xl font-semibold">${index+1}. ${mod.title}</h2>
+        <p class="text-slate-400 mt-1">${mod.note}</p>
+        <div class="mt-4">${mod.html}</div>
+      `;
+      container.appendChild(node);
+
+      // update progress
+      progressFill.style.width = Math.round(((index+1)/modules.length)*100) + '%';
+      progressText.textContent = `Step ${index+1} of ${modules.length}`;
+
+      // enable/disable prev/next
+      document.getElementById('prevBtn').disabled = index === 0;
+      document.getElementById('nextBtn').disabled = index === modules.length-1;
+
+      // attach copy buttons to codeblocks
+      attachCopyButtons();
+    }
+
+    function attachCopyButtons(){
+      document.querySelectorAll('.codeblock').forEach(cb => {
+        if (cb.querySelector('.copy-btn')) return; // already has
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn text-xs px-2 py-1 rounded ml-auto mb-2 bg-slate-700 hover:bg-slate-600';
+        btn.style.float = 'right';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', () => {
+          const text = cb.innerText;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              btn.textContent = 'Copied';
+              setTimeout(()=> btn.textContent = 'Copy', 1200);
+            });
+          } else {
+            // fallback
+            const ta = document.createElement('textarea');
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); ta.remove(); btn.textContent = 'Copied';
+            setTimeout(()=> btn.textContent = 'Copy', 1200);
+          }
+        });
+        cb.prepend(btn);
+      });
+    }
+
+    // Sidebar buttons
+    document.querySelectorAll('.module-btn').forEach(b => {
+      b.addEventListener('click', ()=>{
+        const idx = Number(b.dataset.index);
+        current = idx;
+        renderModule(idx);
+      });
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ if (current < modules.length-1) { current++; renderModule(current); } });
+    document.getElementById('prevBtn').addEventListener('click', ()=>{ if (current > 0) { current--; renderModule(current); } });
+    document.getElementById('showAll').addEventListener('click', ()=>{
+      container.innerHTML = '';
+      modules.forEach((mod,i)=>{
+        const n = document.createElement('div'); n.className = 'fade-up show mb-6'; n.innerHTML = `<h3 class="text-lg font-semibold">${i+1}. ${mod.title}</h3><p class="text-slate-400">${mod.note}</p><div class="mt-3">${mod.html}</div>`; container.appendChild(n);
+      });
+      progressFill.style.width = '100%'; progressText.textContent = `All Modules`;
+      attachCopyButtons();
+    });
+
+    function toggleAnswer(){
+      const ans = document.getElementById('answers');
+      if (!ans) return;
+      ans.classList.toggle('hidden');
+    }
+    window.toggleAnswer = toggleAnswer; // expose for inline onclick
+
+    // initial render
+    renderModule(0);
+
+  </script>
 </body>
-
 </html>
