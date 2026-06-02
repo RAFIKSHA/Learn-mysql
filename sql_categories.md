@@ -398,8 +398,6 @@ ROLLBACK TO sp1;
 
 ---
 
-Ye format students ko bahut pasand aata hai kyunki har query ke saath:
-
 1. **Purpose**
 2. **Syntax**
 3. **Output**
