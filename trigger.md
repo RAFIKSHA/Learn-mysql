@@ -225,12 +225,7 @@ A **Trigger** is a database object that automatically executes when an INSERT, U
 # Module 8: Creating the First Trigger
 
 ```sql
-CREATE TRIGGER trg_insert
-AFTER INSERT
-ON students
-FOR EACH ROW
-INSERT INTO student_logs(message)
-VALUES('Student Added');
+CREATE TRIGGER trg_insert AFTER INSERT ON students FOR EACH ROW BEGIN INSERT INTO student_logs(message) VALUES('Student Added'); END
 ```
 
 ---
