@@ -761,106 +761,299 @@ FROM students;
 | Karan       | 23         |
 
 ---
-# 📚 MySQL Complete Practical Guide with Expected Output
+# Module 10: Aggregate Functions (Basic to Advanced)
 
-# Part 3 (Query 41–60)
+Assume the `students` table contains the following data:
+
+| student_id | name  | age  | dept_id |
+| ---------- | ----- | ---- | ------- |
+| 1          | Rahul | 20   | 1       |
+| 2          | Priya | 21   | 2       |
+| 3          | Aman  | NULL | 1       |
+| 4          | Sneha | 22   | 3       |
+| 5          | Karan | 23   | 1       |
 
 ---
 
-# Module 10: Aggregate Functions
+# 41. COUNT(*)
 
-## 41. Count Total Students
+Counts all rows in the table.
 
-Total records count karne ke liye.
+```sql
+SELECT COUNT(*)
+FROM students;
+```
 
-```sql id="4w0s8v"
+### Output
+
+| COUNT(*) |
+| -------- |
+| 5        |
+
+---
+
+# 42. COUNT(*) with Alias
+
+Using `AS` to give a custom name to the output column.
+
+```sql
 SELECT COUNT(*) AS TotalStudents
 FROM students;
 ```
 
-**Output**
+### Output
 
 | TotalStudents |
 | ------------- |
 | 5             |
 
----
+### Explanation
 
-## 42. Count Students In Department 1
+Without Alias:
 
-```sql id="4zcb7g"
-SELECT COUNT(*) AS CS_Students
-FROM students
-WHERE dept_id = 1;
+```sql
+SELECT COUNT(*)
+FROM students;
 ```
 
-**Output**
+Output column name:
 
-| CS_Students |
-| ----------- |
-| 3           |
+```text
+COUNT(*)
+```
+
+With Alias:
+
+```sql
+SELECT COUNT(*) AS TotalStudents
+FROM students;
+```
+
+Output column name:
+
+```text
+TotalStudents
+```
 
 ---
 
-## 43. Sum Of All Ages
+# 43. COUNT(column_name)
 
-```sql id="f8l1yz"
+Counts only non-NULL values in a column.
+
+```sql
+SELECT COUNT(age)
+FROM students;
+```
+
+### Output
+
+| COUNT(age) |
+| ---------- |
+| 4          |
+
+### Explanation
+
+Aman's age is NULL, so it is not counted.
+
+---
+
+# 44. COUNT(column_name) with Alias
+
+```sql
+SELECT COUNT(age) AS AgeCount
+FROM students;
+```
+
+### Output
+
+| AgeCount |
+| -------- |
+| 4        |
+
+---
+
+# 45. COUNT(DISTINCT dept_id)
+
+Counts unique department IDs.
+
+```sql
+SELECT COUNT(DISTINCT dept_id)
+FROM students;
+```
+
+### Output
+
+| COUNT(DISTINCT dept_id) |
+| ----------------------- |
+| 3                       |
+
+### Explanation
+
+Unique department IDs are:
+
+```text
+1
+2
+3
+```
+
+---
+
+# 46. SUM(age)
+
+Calculates the total of all non-NULL ages.
+
+```sql
+SELECT SUM(age)
+FROM students;
+```
+
+### Output
+
+| SUM(age) |
+| -------- |
+| 86       |
+
+### Calculation
+
+```text
+20 + 21 + 22 + 23 = 86
+```
+
+NULL values are ignored.
+
+---
+
+# 47. SUM(age) with Alias
+
+```sql
 SELECT SUM(age) AS TotalAge
 FROM students;
 ```
 
-**Output**
+### Output
 
 | TotalAge |
 | -------- |
-| 105      |
-
-**Calculation**
-
-```text id="mxw9cx"
-20 + 21 + 19 + 22 + 23 = 105
-```
+| 86       |
 
 ---
 
-## 44. Average Age
+# 48. AVG(age)
 
-```sql id="t8d7kp"
+Calculates the average age.
+
+```sql
+SELECT AVG(age)
+FROM students;
+```
+
+### Output
+
+| AVG(age) |
+| -------- |
+| 21.50    |
+
+### Calculation
+
+```text
+86 ÷ 4 = 21.50
+```
+
+NULL values are ignored.
+
+---
+
+# 49. AVG(age) with Alias
+
+```sql
 SELECT AVG(age) AS AverageAge
 FROM students;
 ```
 
-**Output**
+### Output
 
 | AverageAge |
 | ---------- |
-| 21.00      |
+| 21.50      |
 
 ---
 
-## 45. Minimum Age
+# 50. ROUND(AVG(age),2)
 
-```sql id="frq6hb"
+Rounds the result to 2 decimal places.
+
+```sql
+SELECT ROUND(AVG(age),2)
+FROM students;
+```
+
+### Output
+
+| ROUND(AVG(age),2) |
+| ----------------- |
+| 21.50             |
+
+---
+
+# 51. MIN(age)
+
+Returns the smallest value.
+
+```sql
+SELECT MIN(age)
+FROM students;
+```
+
+### Output
+
+| MIN(age) |
+| -------- |
+| 20       |
+
+---
+
+# 52. MIN(age) with Alias
+
+```sql
 SELECT MIN(age) AS YoungestStudent
 FROM students;
 ```
 
-**Output**
+### Output
 
 | YoungestStudent |
 | --------------- |
-| 19              |
+| 20              |
 
 ---
 
-## 46. Maximum Age
+# 53. MAX(age)
 
-```sql id="gztj9j"
+Returns the largest value.
+
+```sql
+SELECT MAX(age)
+FROM students;
+```
+
+### Output
+
+| MAX(age) |
+| -------- |
+| 23       |
+
+---
+
+# 54. MAX(age) with Alias
+
+```sql
 SELECT MAX(age) AS OldestStudent
 FROM students;
 ```
 
-**Output**
+### Output
 
 | OldestStudent |
 | ------------- |
@@ -868,422 +1061,159 @@ FROM students;
 
 ---
 
-# Module 11: String Functions
+# 55. Aggregate Function with WHERE
 
-## 47. Convert Names To Uppercase
+Count students from Department 1.
 
-```sql id="bgx7oe"
-SELECT UPPER(name)
-FROM students;
-```
-
-**Output**
-
-| UPPER(name) |
-| ----------- |
-| RAHUL       |
-| PRIYA       |
-| AMAN        |
-| SNEHA       |
-| KARAN       |
-
----
-
-## 48. Convert Names To Lowercase
-
-```sql id="sjj75m"
-SELECT LOWER(name)
-FROM students;
-```
-
-**Output**
-
-| LOWER(name) |
-| ----------- |
-| rahul       |
-| priya       |
-| aman        |
-| sneha       |
-| karan       |
-
----
-
-## 49. Length Of Student Names
-
-```sql id="pobn1i"
-SELECT name,
-LENGTH(name)
-FROM students;
-```
-
-**Output**
-
-| name  | LENGTH(name) |
-| ----- | ------------ |
-| Rahul | 5            |
-| Priya | 5            |
-| Aman  | 4            |
-| Sneha | 5            |
-| Karan | 5            |
-
----
-
-## 50. Concatenate Name And City
-
-```sql id="6i1qvn"
-SELECT CONCAT(name,' - ',city)
-AS Details
-FROM students;
-```
-
-**Output**
-
-| Details        |
-| -------------- |
-| Rahul - Pune   |
-| Priya - Mumbai |
-| Aman - Nashik  |
-| Sneha - Pune   |
-| Karan - Nagpur |
-
----
-
-## 51. Full Student Information
-
-```sql id="6ffwti"
-SELECT CONCAT(name,' belongs to ',city)
-AS StudentInfo
-FROM students;
-```
-
-**Output**
-
-| StudentInfo             |
-| ----------------------- |
-| Rahul belongs to Pune   |
-| Priya belongs to Mumbai |
-| Aman belongs to Nashik  |
-| Sneha belongs to Pune   |
-| Karan belongs to Nagpur |
-
----
-
-# Module 12: NULL Functions
-
-## 52. IFNULL Example
-
-Suppose kisi student ki age NULL hai.
-
-```sql id="8pohfx"
-SELECT IFNULL(age,0)
-FROM students;
-```
-
-**Output**
-
-| IFNULL(age,0) |
-| ------------- |
-| 20            |
-| 21            |
-| 19            |
-| 22            |
-| 23            |
-
----
-
-## 53. IFNULL With Alias
-
-```sql id="awty3r"
-SELECT name,
-IFNULL(age,0)
-AS StudentAge
-FROM students;
-```
-
-**Output**
-
-| name  | StudentAge |
-| ----- | ---------- |
-| Rahul | 20         |
-| Priya | 21         |
-| Aman  | 19         |
-| Sneha | 22         |
-| Karan | 23         |
-
----
-
-# Module 13: ROUND Function
-
-## 54. Round Average Age
-
-```sql id="9hnywa"
-SELECT ROUND(AVG(age),2)
-AS AverageAge
-FROM students;
-```
-
-**Output**
-
-| AverageAge |
-| ---------- |
-| 21.00      |
-
----
-
-# Module 14: UPDATE
-
-## 55. Update City
-
-```sql id="m7nx7n"
-UPDATE students
-SET city='Delhi'
-WHERE student_id=1;
-```
-
-**Output**
-
-```text id="lx6gjt"
-Query OK, 1 row affected
-```
-
----
-
-## Verify Update
-
-```sql id="4jjmns"
-SELECT *
+```sql
+SELECT COUNT(*)
 FROM students
-WHERE student_id=1;
+WHERE dept_id = 1;
 ```
 
-**Output**
+### Output
 
-| student_id | name  | city  |
-| ---------- | ----- | ----- |
-| 1          | Rahul | Delhi |
+| COUNT(*) |
+| -------- |
+| 3        |
 
 ---
 
-# Module 15: DELETE
+# 56. Aggregate Function with Alias
 
-## 56. Delete Student
-
-```sql id="9jrqqd"
-DELETE FROM students
-WHERE student_id=5;
+```sql
+SELECT COUNT(*) AS CS_Students
+FROM students
+WHERE dept_id = 1;
 ```
 
-**Output**
+### Output
 
-```text id="pk0eqv"
-Query OK, 1 row affected
-```
+| CS_Students |
+| ----------- |
+| 3           |
 
 ---
 
-## Verify Delete
+# 57. SUM with WHERE
 
-```sql id="z44rmx"
-SELECT *
+Calculate the total age of students in Department 1.
+
+```sql
+SELECT SUM(age)
+FROM students
+WHERE dept_id = 1;
+```
+
+### Output
+
+| SUM(age) |
+| -------- |
+| 43       |
+
+### Calculation
+
+```text
+20 + 23 = 43
+```
+
+Aman's age is NULL, so it is ignored.
+
+---
+
+# 58. AVG with WHERE
+
+Calculate the average age of students in Department 1.
+
+```sql
+SELECT AVG(age)
+FROM students
+WHERE dept_id = 1;
+```
+
+### Output
+
+| AVG(age) |
+| -------- |
+| 21.50    |
+
+---
+
+# 59. MAX with WHERE
+
+Find the oldest student in Department 1.
+
+```sql
+SELECT MAX(age)
+FROM students
+WHERE dept_id = 1;
+```
+
+### Output
+
+| MAX(age) |
+| -------- |
+| 23       |
+
+---
+
+# 60. MIN with WHERE
+
+Find the youngest student in Department 1.
+
+```sql
+SELECT MIN(age)
+FROM students
+WHERE dept_id = 1;
+```
+
+### Output
+
+| MIN(age) |
+| -------- |
+| 20       |
+
+---
+
+# Quick Interview Notes
+
+| Function      | Counts NULL Values? |
+| ------------- | ------------------- |
+| COUNT(*)      | Yes (counts rows)   |
+| COUNT(column) | No                  |
+| SUM()         | No                  |
+| AVG()         | No                  |
+| MIN()         | No                  |
+| MAX()         | No                  |
+
+## Most Asked Interview Question
+
+### Query 1
+
+```sql
+SELECT COUNT(*)
 FROM students;
 ```
 
-**Output**
+Counts all rows in the table.
 
-| student_id | name  |
-| ---------- | ----- |
-| 1          | Rahul |
-| 2          | Priya |
-| 3          | Aman  |
-| 4          | Sneha |
+### Query 2
 
----
-
-# Module 16: ALTER TABLE
-
-## 57. Add New Column
-
-```sql id="1jl8o9"
-ALTER TABLE students
-ADD phone VARCHAR(15);
-```
-
-**Output**
-
-```text id="6p0r6v"
-Query OK, 0 rows affected
-```
-
----
-
-## 58. View Updated Structure
-
-```sql id="txg4ec"
-DESC students;
-```
-
-**Output**
-
-| Field      |
-| ---------- |
-| student_id |
-| name       |
-| age        |
-| email      |
-| city       |
-| dept_id    |
-| phone      |
-
----
-
-## 59. Drop Column
-
-```sql id="1e5h7k"
-ALTER TABLE students
-DROP COLUMN phone;
-```
-
-**Output**
-
-```text id="hjlwm7"
-Query OK, 0 rows affected
-```
-
----
-
-# Module 17: TRUNCATE
-
-## 60. Remove All Records
-
-```sql id="rjdfgd"
-TRUNCATE TABLE students;
-```
-
-**Output**
-
-```text id="pvt6g6"
-Query OK, 0 rows affected
-```
-
----
-
-## Verify
-
-```sql id="7x1a0h"
-SELECT *
+```sql
+SELECT COUNT(age)
 FROM students;
 ```
 
-**Output**
+Counts only non-NULL age values.
 
-```text id="ng6l3t"
-Empty set
-```
+### Difference
 
----
+| Query      | Result             |
+| ---------- | ------------------ |
+| COUNT(*)   | Total rows         |
+| COUNT(age) | Non-NULL ages only |
 
-# Summary
+This is one of the most common SQL interview questions and is very useful for understanding how aggregate functions handle NULL values.
 
-### Database Commands
 
-✅ CREATE DATABASE
-
-✅ SHOW DATABASES
-
-✅ USE DATABASE
-
-✅ DROP DATABASE
-
----
-
-### Table Commands
-
-✅ CREATE TABLE
-
-✅ PRIMARY KEY
-
-✅ FOREIGN KEY
-
-✅ UNIQUE
-
-✅ NOT NULL
-
-✅ DEFAULT
-
-✅ AUTO_INCREMENT
-
-✅ ALTER TABLE
-
----
-
-### DML Commands
-
-✅ INSERT
-
-✅ UPDATE
-
-✅ DELETE
-
----
-
-### Query Commands
-
-✅ SELECT
-
-✅ DISTINCT
-
-✅ WHERE
-
-✅ AND
-
-✅ OR
-
-✅ NOT
-
-✅ IN
-
-✅ BETWEEN
-
-✅ LIKE
-
-✅ ORDER BY
-
-✅ LIMIT
-
-✅ ALIAS
-
----
-
-### Functions
-
-✅ COUNT
-
-✅ SUM
-
-✅ AVG
-
-✅ MIN
-
-✅ MAX
-
-✅ UPPER
-
-✅ LOWER
-
-✅ LENGTH
-
-✅ CONCAT
-
-✅ IFNULL
-
-✅ ROUND
-
----
-
-### Maintenance Commands
-
-✅ ALTER TABLE
-
-✅ TRUNCATE TABLE
-
-✅ DROP TABLE
+-
