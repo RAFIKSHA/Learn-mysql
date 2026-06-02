@@ -350,8 +350,8 @@ Yes, simple views can be updated.
 
 **A View is a virtual table based on the result of a SQL query. It does not store data itself but displays data from one or more underlying tables.**
 
-Teaching order:
+learning order:
 
 **Tables → SELECT → WHERE → JOIN → VIEW → INDEX → STORED PROCEDURE → TRIGGER**
 
-Ye industry aur interview dono ke hisaab se best sequence hai. 🚀
+
