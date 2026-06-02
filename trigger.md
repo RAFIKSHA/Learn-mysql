@@ -1,9 +1,35 @@
-# SQL Triggers – Complete Step-by-Step Teaching Flow (Beginner to Advanced)
-
+# SQL TRIGGERS – COMPLETE THEORY + PRACTICAL + OUTPUT FILE (MySQL)
 
 ---
 
 # Module 1: Creating a Table
+
+## What is a Table?
+
+A table is a collection of rows and columns used to store related data.
+
+Example:
+
+| student_id | name  | course | fees |
+| ---------- | ----- | ------ | ---- |
+| 101        | Rafik | Python | 5000 |
+
+---
+
+## Create Database
+
+```sql
+CREATE DATABASE trigger_demo;
+USE trigger_demo;
+```
+
+### Output
+
+```text
+Database changed
+```
+
+---
 
 ## Create Students Table
 
@@ -16,6 +42,12 @@ CREATE TABLE students(
 );
 ```
 
+### Output
+
+```text
+Query OK, 0 rows affected
+```
+
 ---
 
 ## Understanding the Code
@@ -26,7 +58,7 @@ CREATE TABLE students(
 | students     | Table name                      |
 | student_id   | Column name                     |
 | INT          | Integer data type               |
-| PRIMARY KEY  | Unique identifier for each row  |
+| PRIMARY KEY  | Unique identifier               |
 | VARCHAR(50)  | Stores text up to 50 characters |
 
 ---
@@ -50,11 +82,23 @@ DESC students;
 
 # Module 2: INSERT Operation
 
-## Insert a Single Record
+## What is INSERT?
+
+INSERT is used to add records into a table.
+
+---
+
+## Insert Single Record
 
 ```sql
 INSERT INTO students
 VALUES(101,'Rafik','Python',5000);
+```
+
+### Output
+
+```text
+Query OK, 1 row affected
 ```
 
 ---
@@ -67,6 +111,12 @@ VALUES
 (102,'Ali','Java',6000),
 (103,'Shah','SQL',4000),
 (104,'Aman','Django',7000);
+```
+
+### Output
+
+```text
+Query OK, 3 rows affected
 ```
 
 ---
@@ -90,12 +140,24 @@ SELECT * FROM students;
 
 # Module 3: UPDATE Operation
 
+## What is UPDATE?
+
+Used to modify existing data.
+
+---
+
 ## Update Course
 
 ```sql
 UPDATE students
 SET course='Data Science'
 WHERE student_id=101;
+```
+
+### Output
+
+```text
+Query OK, 1 row affected
 ```
 
 ---
@@ -109,6 +171,11 @@ WHERE student_id=101;
 ---
 
 ### After Update
+
+```sql
+SELECT * FROM students
+WHERE student_id=101;
+```
 
 | student_id | name  | course       |
 | ---------- | ----- | ------------ |
@@ -124,36 +191,60 @@ SET fees=8000
 WHERE student_id=102;
 ```
 
+### Output
+
+```text
+Query OK, 1 row affected
+```
+
 ---
 
 # Module 4: DELETE Operation
 
-## Delete a Record
+## What is DELETE?
+
+DELETE removes records from a table.
+
+---
+
+## Delete Record
 
 ```sql
 DELETE FROM students
 WHERE student_id=104;
 ```
 
----
+### Output
 
-### Before Delete
-
-| student_id | name |
-| ---------- | ---- |
-| 104        | Aman |
+```text
+Query OK, 1 row affected
+```
 
 ---
 
-### After Delete
+## Verify
 
-The record is removed from the table.
+```sql
+SELECT * FROM students;
+```
+
+### Output
+
+| student_id | name  | course       | fees |
+| ---------- | ----- | ------------ | ---- |
+| 101        | Rafik | Data Science | 5000 |
+| 102        | Ali   | Java         | 8000 |
+| 103        | Shah  | SQL          | 4000 |
 
 ---
 
-# Module 5: Creating a Log Table
+# Module 5: Create Log Table
 
-Now we create a table that will store activity logs.
+## Why Log Table?
+
+Stores all activities performed on students table.
+
+---
 
 ```sql
 CREATE TABLE student_logs(
@@ -162,9 +253,15 @@ CREATE TABLE student_logs(
 );
 ```
 
+### Output
+
+```text
+Query OK, 0 rows affected
+```
+
 ---
 
-## View Log Table
+## Check Logs
 
 ```sql
 SELECT * FROM student_logs;
@@ -178,137 +275,144 @@ Empty Set
 
 ---
 
-# Module 6: Understanding the Problem
+# Module 6: Why Triggers?
 
-Suppose a new student is added.
+Suppose a new student is inserted.
 
 ```sql
 INSERT INTO students
 VALUES(105,'Sana','AI',9000);
 ```
 
-The student is successfully inserted.
+Student is added successfully.
 
-But how does the administrator know that a new student was added?
+But how will Administrator know?
 
-Without a Trigger, we must manually insert a log record.
-
-```sql
-INSERT INTO student_logs(message)
-VALUES('New Student Added');
-```
-
----
-
-### Problem
-
-```text
-Student Table Updated
-        ↓
-Developer manually inserts log
-        ↓
-May forget to do it
-```
-
-This problem is solved using Triggers.
-
----
-
-# Module 7: What is a Trigger?
-
-### Definition
-
-A **Trigger** is a database object that automatically executes when an INSERT, UPDATE, or DELETE event occurs on a table.
-
----
-
-# Module 8: Creating the First Trigger
-
-```sql
-CREATE TRIGGER trg_insert AFTER INSERT ON students FOR EACH ROW BEGIN INSERT INTO student_logs(message) VALUES('Student Added'); END
-```
-
----
-
-# Understanding Each Line
-
-### CREATE TRIGGER
-
-```sql
-CREATE TRIGGER
-```
-
-Creates a trigger.
-
----
-
-### Trigger Name
-
-```sql
-trg_insert
-```
-
-Name of the trigger.
-
----
-
-### Event Timing
-
-```sql
-AFTER INSERT
-```
-
-Execute the trigger after data is inserted.
-
----
-
-### Target Table
-
-```sql
-ON students
-```
-
-The trigger is attached to the students table.
-
----
-
-### FOR EACH ROW
-
-```sql
-FOR EACH ROW
-```
-
-Execute the trigger for every inserted row.
-
----
-
-### Action
-
-```sql
-INSERT INTO student_logs
-```
-
-Insert a record into the log table.
-
----
-
-# Testing the Trigger
-
-```sql
-INSERT INTO students
-VALUES(106,'Khan','MySQL',5000);
-```
-
-The database automatically executes:
+Without Trigger:
 
 ```sql
 INSERT INTO student_logs(message)
 VALUES('Student Added');
 ```
 
+Problem:
+
+```text
+Developer must remember to create logs manually.
+Developer may forget.
+```
+
+Solution:
+
+```text
+TRIGGER
+```
+
 ---
 
-## View Logs
+# Module 7: What is a Trigger?
+
+## Definition
+
+A Trigger is a database object that automatically executes when an INSERT, UPDATE, or DELETE operation occurs on a table.
+
+---
+
+## Trigger Architecture
+
+```text
+User Action
+     ↓
+INSERT / UPDATE / DELETE
+     ↓
+Trigger Fires Automatically
+     ↓
+Log Table Updated
+```
+
+---
+
+# Module 8: AFTER INSERT Trigger
+
+## Create Trigger
+
+```sql
+DROP TRIGGER IF EXISTS trg_insert;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_insert
+AFTER INSERT
+ON students
+FOR EACH ROW
+BEGIN
+
+    INSERT INTO student_logs(message)
+    VALUES(
+        CONCAT(
+            'Student Added : ',
+            NEW.name
+        )
+    );
+
+END $$
+
+DELIMITER ;
+```
+
+### Output
+
+```text
+Query OK
+```
+
+---
+
+## Verify Trigger
+
+```sql
+SHOW TRIGGERS;
+```
+
+### Output
+
+| Trigger    | Event  | Table    |
+| ---------- | ------ | -------- |
+| trg_insert | INSERT | students |
+
+---
+
+## Test Trigger
+
+```sql
+INSERT INTO students
+VALUES(106,'Khan','MySQL',5000);
+```
+
+### Output
+
+```text
+Query OK, 1 row affected
+```
+
+---
+
+## Check Students Table
+
+```sql
+SELECT * FROM students
+WHERE student_id=106;
+```
+
+### Output
+
+| student_id | name | course | fees |
+| ---------- | ---- | ------ | ---- |
+| 106        | Khan | MySQL  | 5000 |
+
+---
+
+## Check Logs
 
 ```sql
 SELECT * FROM student_logs;
@@ -316,72 +420,23 @@ SELECT * FROM student_logs;
 
 ### Output
 
-| log_id | message       |
-| ------ | ------------- |
-| 1      | Student Added |
-
----
-
-# Module 9: Understanding the NEW Keyword
-
-Question:
-
-How can we know which student was added?
-
-The message "Student Added" does not provide enough information.
-
-Use the **NEW** keyword.
-
----
-
-## Improved Trigger
-
-```sql
-CREATE TRIGGER trg_insert
-AFTER INSERT
-ON students
-FOR EACH ROW
-INSERT INTO student_logs(message)
-VALUES(
-CONCAT(
-'Student Added : ',
-NEW.name
-)
-);
-```
-
----
-
-## Insert a Record
-
-```sql
-INSERT INTO students
-VALUES(107,'Riya','ML',7000);
-```
-
----
-
-## Log Output
-
 | log_id | message              |
 | ------ | -------------------- |
-| 2      | Student Added : Riya |
+| 1      | Student Added : Khan |
 
 ---
 
-# What is NEW?
+## NEW Keyword
 
-NEW represents the newly inserted row.
+NEW refers to the newly inserted row.
 
 Inserted Row:
 
 | student_id | name | course | fees |
 | ---------- | ---- | ------ | ---- |
-| 107        | Riya | ML     | 7000 |
+| 106        | Khan | MySQL  | 5000 |
 
----
-
-Inside the Trigger:
+Inside Trigger:
 
 ```sql
 NEW.student_id
@@ -390,10 +445,8 @@ NEW.student_id
 Output:
 
 ```text
-107
+106
 ```
-
----
 
 ```sql
 NEW.name
@@ -402,10 +455,8 @@ NEW.name
 Output:
 
 ```text
-Riya
+Khan
 ```
-
----
 
 ```sql
 NEW.course
@@ -414,10 +465,8 @@ NEW.course
 Output:
 
 ```text
-ML
+MySQL
 ```
-
----
 
 ```sql
 NEW.fees
@@ -426,49 +475,87 @@ NEW.fees
 Output:
 
 ```text
-7000
+5000
 ```
 
 ---
 
-# Module 10: UPDATE Trigger
+# Module 9: AFTER UPDATE Trigger
+
+## Create Trigger
 
 ```sql
-CREATE TRIGGER trg_update
+DROP TRIGGER IF EXISTS trg_fee_update;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_fee_update
 AFTER UPDATE
 ON students
 FOR EACH ROW
-INSERT INTO student_logs(message)
-VALUES('Student Updated');
+BEGIN
+
+    INSERT INTO student_logs(message)
+    VALUES(
+        CONCAT(
+            'Fees Changed From ',
+            OLD.fees,
+            ' To ',
+            NEW.fees
+        )
+    );
+
+END $$
+
+DELIMITER ;
+```
+
+### Output
+
+```text
+Query OK
 ```
 
 ---
 
-## Test the Trigger
+## Test Trigger
 
 ```sql
 UPDATE students
 SET fees=10000
-WHERE student_id=107;
+WHERE student_id=106;
 ```
 
----
-
-### Log Output
+### Output
 
 ```text
-Student Updated
+Query OK, 1 row affected
 ```
 
 ---
 
-# Module 11: Understanding OLD and NEW
+## Check Logs
+
+```sql
+SELECT * FROM student_logs;
+```
+
+### Output
+
+| log_id | message                         |
+| ------ | ------------------------------- |
+| 1      | Student Added : Khan            |
+| 2      | Fees Changed From 5000 To 10000 |
+
+---
+
+# Module 10: OLD vs NEW
 
 ### Before Update
 
 | fees |
 | ---- |
-| 7000 |
+| 5000 |
 
 ---
 
@@ -480,7 +567,7 @@ Student Updated
 
 ---
 
-Inside the Trigger:
+### OLD Value
 
 ```sql
 OLD.fees
@@ -489,10 +576,12 @@ OLD.fees
 Output:
 
 ```text
-7000
+5000
 ```
 
 ---
+
+### NEW Value
 
 ```sql
 NEW.fees
@@ -506,84 +595,188 @@ Output:
 
 ---
 
-# Advanced UPDATE Trigger
-
-```sql
-CREATE TRIGGER trg_fee_update
-AFTER UPDATE
-ON students
-FOR EACH ROW
-INSERT INTO student_logs(message)
-VALUES(
-CONCAT(
-'Fees Changed From ',
-OLD.fees,
-' To ',
-NEW.fees
-)
-);
-```
-
----
-
-### Output
+## Visual Explanation
 
 ```text
-Fees Changed From 7000 To 10000
+Before Update
+
+OLD.fees = 5000
+
+      ↓ UPDATE
+
+NEW.fees = 10000
+
+After Update
 ```
 
 ---
 
-# Module 12: DELETE Trigger
+# Module 11: AFTER DELETE Trigger
+
+## Create Trigger
 
 ```sql
+DROP TRIGGER IF EXISTS trg_delete;
+
+DELIMITER $$
+
 CREATE TRIGGER trg_delete
 AFTER DELETE
 ON students
 FOR EACH ROW
-INSERT INTO student_logs(message)
-VALUES(
-CONCAT(
-'Deleted Student : ',
-OLD.name
-)
-);
+BEGIN
+
+    INSERT INTO student_logs(message)
+    VALUES(
+        CONCAT(
+            'Deleted Student : ',
+            OLD.name
+        )
+    );
+
+END $$
+
+DELIMITER ;
+```
+
+### Output
+
+```text
+Query OK
 ```
 
 ---
 
-## Delete a Record
+## Test Trigger
 
 ```sql
 DELETE FROM students
-WHERE student_id=107;
+WHERE student_id=106;
 ```
 
----
-
-### Log Output
+### Output
 
 ```text
-Deleted Student : Riya
+Query OK, 1 row affected
 ```
 
 ---
 
-# Why OLD is Used?
+## Check Students Table
 
-After deletion, the row no longer exists in the table.
+```sql
+SELECT * FROM students;
+```
+
+### Output
+
+| student_id | name  | course       | fees |
+| ---------- | ----- | ------------ | ---- |
+| 101        | Rafik | Data Science | 5000 |
+| 102        | Ali   | Java         | 8000 |
+| 103        | Shah  | SQL          | 4000 |
+| 105        | Sana  | AI           | 9000 |
+
+---
+
+## Check Logs
+
+```sql
+SELECT * FROM student_logs;
+```
+
+### Output
+
+| log_id | message                         |
+| ------ | ------------------------------- |
+| 1      | Student Added : Khan            |
+| 2      | Fees Changed From 5000 To 10000 |
+| 3      | Deleted Student : Khan          |
+
+---
+
+## Why OLD?
+
+After DELETE:
+
+```text
+Row no longer exists.
+```
 
 Therefore:
 
 ```sql
+NEW.name
+```
+
+❌ Not Available
+
+```sql
 OLD.name
 ```
 
-still contains the deleted student's information.
+✅ Available
 
 ---
 
-# Trigger Types Summary
+# Module 12: BEFORE INSERT Trigger
+
+## Purpose
+
+Validate data before insertion.
+
+Example:
+
+```text
+Fees cannot be negative.
+```
+
+---
+
+## Create Trigger
+
+```sql
+DROP TRIGGER IF EXISTS trg_before_insert;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_before_insert
+BEFORE INSERT
+ON students
+FOR EACH ROW
+BEGIN
+
+    IF NEW.fees < 0 THEN
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT='Fees Cannot Be Negative';
+
+    END IF;
+
+END $$
+
+DELIMITER ;
+```
+
+---
+
+## Test
+
+```sql
+INSERT INTO students
+VALUES(110,'Riya','ML',-5000);
+```
+
+### Output
+
+```text
+ERROR 1644 (45000):
+Fees Cannot Be Negative
+```
+
+---
+
+# Module 13: Trigger Types Summary
 
 | Trigger Type  | OLD | NEW |
 | ------------- | --- | --- |
@@ -596,53 +789,77 @@ still contains the deleted student's information.
 
 ---
 
-# Recommended Teaching Flow
+# Complete End-to-End Test
 
-### Session 1: SQL Fundamentals
+```sql
+INSERT INTO students
+VALUES(201,'Rafik','Python',5000);
 
-1. Create Table
-2. Data Types
-3. Primary Key
-4. INSERT
-5. SELECT
+UPDATE students
+SET fees=7000
+WHERE student_id=201;
 
----
+DELETE FROM students
+WHERE student_id=201;
 
-### Session 2: Data Modification
+SELECT * FROM student_logs;
+```
 
-6. UPDATE
-7. DELETE
-8. WHERE Clause
+### Final Output
 
----
-
-### Session 3: Trigger Foundation
-
-9. Create Log Table
-10. Why Triggers Are Needed
-11. Trigger Architecture
-
----
-
-### Session 4: Trigger Implementation
-
-12. AFTER INSERT Trigger
-13. NEW Keyword
-14. AFTER UPDATE Trigger
-15. OLD vs NEW
-16. AFTER DELETE Trigger
+| log_id | message                         |
+| ------ | ------------------------------- |
+| 1      | Student Added : Khan            |
+| 2      | Fees Changed From 5000 To 10000 |
+| 3      | Deleted Student : Khan          |
+| 4      | Student Added : Rafik           |
+| 5      | Fees Changed From 5000 To 7000  |
+| 6      | Deleted Student : Rafik         |
 
 ---
 
-### Session 5: Advanced Concepts
+# Interview Questions
 
-17. BEFORE INSERT Trigger
-18. BEFORE UPDATE Trigger
-19. BEFORE DELETE Trigger
-20. Audit Log Project
+### What is a Trigger?
+
+**A Trigger is a database object that automatically executes a predefined set of SQL statements whenever an INSERT, UPDATE, or DELETE operation occurs on a table.**
+
+### Why Use Triggers?
+
+1. Audit Logging
+2. Data Validation
+3. Security Rules
+4. Automatic Calculations
+5. Maintaining Data Integrity
+
+### Difference Between OLD and NEW
+
+| OLD                       | NEW                       |
+| ------------------------- | ------------------------- |
+| Previous value            | Updated/New value         |
+| Used in UPDATE and DELETE | Used in INSERT and UPDATE |
 
 ---
 
-# Final Definition
+# Real-Life Example
 
-**A Trigger is a database object that automatically executes a predefined set of SQL statements whenever an INSERT, UPDATE, or DELETE operation occurs on a table.** 🚀
+```text
+ATM Transaction
+      ↓
+Money Withdrawn
+      ↓
+Trigger Fires
+      ↓
+Transaction Log Stored
+
+Student Admission
+      ↓
+INSERT
+      ↓
+Trigger Fires
+      ↓
+Admission Log Stored
+```
+
+**Final Definition:**
+**Trigger = Automatic SQL Event Handler inside the database.** 🚀
