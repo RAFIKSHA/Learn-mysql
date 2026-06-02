@@ -1,6 +1,5 @@
 # SQL Triggers – Complete Step-by-Step Teaching Flow (Beginner to Advanced)
 
-If you want to teach **Triggers properly**, do not start directly with Triggers. First build the foundation using Tables, INSERT, UPDATE, and DELETE operations.
 
 ---
 
