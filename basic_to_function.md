@@ -1,4 +1,4 @@
-# 📚 MySQL Complete Practical Guide with Expected Output
+# 📚 MySQL Complete Practical Guide 
 
 # Project: College Management System
 
