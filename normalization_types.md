@@ -1,5 +1,3 @@
-Agar aap **Normalization ke 1NF, 2NF, aur 3NF** ko isi simple style mein padhana chahte ho, to ye ready-made notes use kar sakte ho:
-
 # 1NF (First Normal Form)
 
 ### Rule:
