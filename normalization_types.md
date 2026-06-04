@@ -1,607 +1,186 @@
-# 🚀 Database Normalization Complete Practical Guide
+Agar aap **Normalization ke 1NF, 2NF, aur 3NF** ko isi simple style mein padhana chahte ho, to ye ready-made notes use kar sakte ho:
 
-## From Unnormalized Data → 1NF → 2NF → 3NF
+# 1NF (First Normal Form)
 
-### Real Project: Hospital Management System
+### Rule:
 
----
+✅ Each column contains atomic values.
 
-# What is Normalization?
+✅ No repeating groups.
 
-**Normalization** is the process of organizing data into multiple related tables to:
+### ❌ Wrong Example
 
-* Reduce Data Redundancy
-* Eliminate Data Anomalies
-* Improve Data Consistency
-* Improve Database Design
-* Make Maintenance Easier
+| Student_ID | Name  | Skills            |
+| ---------- | ----- | ----------------- |
+| 101        | Rafik | Python, SQL, Java |
 
----
+Problem:
 
-# Why Do We Need Normalization?
+* Skills column mein multiple values hain.
+* One Cell ≠ One Value
 
-Suppose a hospital stores all information in one table.
+### ✅ Correct Example
 
-Without normalization:
+| Student_ID | Name  | Skill  |
+| ---------- | ----- | ------ |
+| 101        | Rafik | Python |
+| 101        | Rafik | SQL    |
+| 101        | Rafik | Java   |
 
-❌ Duplicate Data
+### Definition
 
-❌ Update Problems
+> Every column should contain atomic (single) values and each row should be unique.
 
-❌ Insert Problems
+### Shortcut
 
-❌ Delete Problems
-
----
-
-# Step 1: Create Database
-
-```sql
-CREATE DATABASE hospital_db;
-
-USE hospital_db;
-```
+**One Cell = One Value**
 
 ---
 
-# Understanding UNF (Un-Normalized Form)
+# 2NF (Second Normal Form)
 
-Before learning 1NF, we must understand what happens when data is not normalized.
+### Rule:
 
----
+✅ Table should already be in 1NF.
 
-## Create Unnormalized Table
+✅ No Partial Dependency.
 
-```sql
-CREATE TABLE patient_records(
-    patient_id INT,
-    patient_name VARCHAR(100),
-    doctors VARCHAR(200)
-);
-```
+### What is Partial Dependency?
 
----
+Jab non-key column sirf primary key ke ek part par depend kare, poori key par nahi.
 
-## Insert Data
+### ❌ Wrong Example
 
-```sql
-INSERT INTO patient_records
-VALUES
-(1,'Rahul','Dr. Mehta,Dr. Khan'),
-(2,'Priya','Dr. Patel'),
-(3,'Amit','Dr. Khan,Dr. Sharma');
-```
+| Student_ID | Course_ID | Student_Name | Course_Name |
+| ---------- | --------- | ------------ | ----------- |
+| 101        | C1        | Rafik        | Python      |
+| 101        | C2        | Rafik        | SQL         |
 
----
+Composite Primary Key = (Student_ID, Course_ID)
 
-## Current Data
+Problem:
 
-| patient_id | patient_name | doctors              |
-| ---------- | ------------ | -------------------- |
-| 1          | Rahul        | Dr. Mehta, Dr. Khan  |
-| 2          | Priya        | Dr. Patel            |
-| 3          | Amit         | Dr. Khan, Dr. Sharma |
+* Student_Name sirf Student_ID par depend karta hai.
+* Course_Name sirf Course_ID par depend karta hai.
+
+Ye Partial Dependency hai.
 
 ---
 
-# Problem
+### ✅ Correct Example
 
-Notice this column:
+### Students
 
-```text
-Dr. Mehta, Dr. Khan
-```
-
-Multiple values are stored inside one cell.
-
-This violates database design rules.
-
-This form is called:
-
-# UNF (Un-Normalized Form)
-
----
-
-# First Normal Form (1NF)
-
-## Definition
-
-A table is in 1NF if:
-
-✅ Each column contains atomic values
-
-✅ No multiple values in one cell
-
-✅ No repeating groups
-
----
-
-# Convert UNF → 1NF
-
-Instead of:
-
-| patient_id | patient_name | doctors             |
-| ---------- | ------------ | ------------------- |
-| 1          | Rahul        | Dr. Mehta, Dr. Khan |
-
-Store as:
-
-| patient_id | patient_name | doctor_name |
-| ---------- | ------------ | ----------- |
-| 1          | Rahul        | Dr. Mehta   |
-| 1          | Rahul        | Dr. Khan    |
-
----
-
-## Create 1NF Table
-
-```sql
-CREATE TABLE patient_doctors(
-    patient_id INT,
-    patient_name VARCHAR(100),
-    doctor_name VARCHAR(100)
-);
-```
-
----
-
-## Insert Data
-
-```sql
-INSERT INTO patient_doctors
-VALUES
-(1,'Rahul','Dr. Mehta'),
-(1,'Rahul','Dr. Khan'),
-(2,'Priya','Dr. Patel'),
-(3,'Amit','Dr. Khan'),
-(3,'Amit','Dr. Sharma');
-```
-
----
-
-## Result
-
-| patient_id | patient_name | doctor_name |
-| ---------- | ------------ | ----------- |
-| 1          | Rahul        | Dr. Mehta   |
-| 1          | Rahul        | Dr. Khan    |
-| 2          | Priya        | Dr. Patel   |
-| 3          | Amit         | Dr. Khan    |
-| 3          | Amit         | Dr. Sharma  |
-
----
-
-# Is This Fully Normalized?
-
-❌ No
-
-Look carefully:
-
-```text
-Rahul repeated
-Rahul repeated
-Amit repeated
-```
-
-Still duplicate data exists.
-
----
-
-# Second Normal Form (2NF)
-
-## Definition
-
-A table is in 2NF if:
-
-✅ It is already in 1NF
-
-✅ No Partial Dependency exists
-
----
-
-# What is Partial Dependency?
-
-Suppose table:
-
-| patient_id | patient_name | doctor_name |
-| ---------- | ------------ | ----------- |
-| 1          | Rahul        | Dr. Mehta   |
-| 1          | Rahul        | Dr. Khan    |
-
-Here:
-
-```text
-patient_name depends only on patient_id
-```
-
-But patient_name is repeated in every row.
-
-This is called:
-
-# Partial Dependency
-
----
-
-# Convert 1NF → 2NF
-
-Separate patient information.
-
----
-
-## Patients Table
-
-```sql
-CREATE TABLE patients(
-    patient_id INT PRIMARY KEY,
-    patient_name VARCHAR(100)
-);
-```
-
----
-
-## Patient_Doctor Table
-
-```sql
-CREATE TABLE patient_doctor(
-    patient_id INT,
-    doctor_name VARCHAR(100)
-);
-```
-
----
-
-## Insert Data
-
-### Patients
-
-```sql
-INSERT INTO patients
-VALUES
-(1,'Rahul'),
-(2,'Priya'),
-(3,'Amit');
-```
-
----
-
-### Patient_Doctor
-
-```sql
-INSERT INTO patient_doctor
-VALUES
-(1,'Dr. Mehta'),
-(1,'Dr. Khan'),
-(2,'Dr. Patel'),
-(3,'Dr. Khan'),
-(3,'Dr. Sharma');
-```
-
----
-
-## Now Data Looks Better
-
-### Patients
-
-| patient_id | patient_name |
+| Student_ID | Student_Name |
 | ---------- | ------------ |
-| 1          | Rahul        |
-| 2          | Priya        |
-| 3          | Amit         |
+| 101        | Rafik        |
+
+### Courses
+
+| Course_ID | Course_Name |
+| --------- | ----------- |
+| C1        | Python      |
+| C2        | SQL         |
+
+### Enrollment
+
+| Student_ID | Course_ID |
+| ---------- | --------- |
+| 101        | C1        |
+| 101        | C2        |
+
+### Definition
+
+> Every non-key attribute must depend on the whole primary key.
+
+### Shortcut
+
+**Depend on Full Key, Not Part of Key**
 
 ---
 
-### Patient_Doctor
+# 3NF (Third Normal Form)
 
-| patient_id | doctor_name |
-| ---------- | ----------- |
-| 1          | Dr. Mehta   |
-| 1          | Dr. Khan    |
-| 2          | Dr. Patel   |
+### Rule:
 
----
+✅ Table should already be in 2NF.
 
-# Is This Fully Normalized?
+✅ No Transitive Dependency.
 
-Still ❌ No
+### What is Transitive Dependency?
 
-Because:
+Jab ek non-key column doosre non-key column par depend kare.
 
-```text
-Doctor Name is repeated
-```
+### ❌ Wrong Example
 
----
+| Emp_ID | Emp_Name | Dept_ID | Dept_Name |
+| ------ | -------- | ------- | --------- |
+| 1      | Ali      | D1      | HR        |
+| 2      | Sara     | D2      | IT        |
 
-# Third Normal Form (3NF)
+Problem:
 
-## Definition
+* Emp_ID → Dept_ID
+* Dept_ID → Dept_Name
 
-A table is in 3NF if:
+Yani Dept_Name indirectly Emp_ID par depend kar raha hai.
 
-✅ It is already in 2NF
-
-✅ No Transitive Dependency exists
+Ye Transitive Dependency hai.
 
 ---
 
-# What is Transitive Dependency?
+### ✅ Correct Example
 
-Suppose we have:
+### Employees
 
-| doctor_name | specialization |
-| ----------- | -------------- |
-| Dr. Mehta   | Cardiologist   |
-| Dr. Khan    | Neurologist    |
+| Emp_ID | Emp_Name | Dept_ID |
+| ------ | -------- | ------- |
+| 1      | Ali      | D1      |
+| 2      | Sara     | D2      |
 
-Relationship:
+### Departments
 
-```text
-doctor_name → specialization
-```
+| Dept_ID | Dept_Name |
+| ------- | --------- |
+| D1      | HR        |
+| D2      | IT        |
 
-Specialization depends on doctor.
+Ab redundancy remove ho gayi.
 
-Not on patient.
+### Definition
 
-Therefore it should be stored separately.
+> Non-key attributes should depend only on the primary key and not on other non-key attributes.
 
----
+### Shortcut
 
-# Create Final 3NF Design
-
----
-
-## Patients Table
-
-```sql
-CREATE TABLE patients(
-    patient_id INT PRIMARY KEY,
-    patient_name VARCHAR(100)
-);
-```
+**Non-Key should not depend on Non-Key**
 
 ---
 
-## Doctors Table
+# One-Line Interview Revision
 
-```sql
-CREATE TABLE doctors(
-    doctor_id INT PRIMARY KEY,
-    doctor_name VARCHAR(100),
-    specialization VARCHAR(100)
-);
-```
+### 1NF
 
----
+**One Cell = One Value**
 
-## Appointments Table
+### 2NF
 
-```sql
-CREATE TABLE appointments(
-    appointment_id INT PRIMARY KEY,
-    patient_id INT,
-    doctor_id INT
-);
-```
+**Depend on Full Key**
+
+### 3NF
+
+**Non-Key should not depend on Non-Key**
 
 ---
 
-# Insert Data
+### Easy Memory Trick
 
-## Patients
+**1NF → Atomic Values**
+**2NF → Remove Partial Dependency**
+**3NF → Remove Transitive Dependency**
 
-```sql
-INSERT INTO patients
-VALUES
-(1,'Rahul'),
-(2,'Priya'),
-(3,'Amit');
-```
+Yaad rakhne ka formula:
 
----
+**Atomic → Partial → Transitive**
 
-## Doctors
-
-```sql
-INSERT INTO doctors
-VALUES
-(101,'Dr. Mehta','Cardiologist'),
-(102,'Dr. Khan','Neurologist'),
-(103,'Dr. Patel','Orthopedic'),
-(104,'Dr. Sharma','Dermatologist');
-```
-
----
-
-## Appointments
-
-```sql
-INSERT INTO appointments
-VALUES
-(1001,1,101),
-(1002,1,102),
-(1003,2,103),
-(1004,3,102),
-(1005,3,104);
-```
-
----
-
-# Final Database Structure
-
-### Patients
-
-| patient_id | patient_name |
-| ---------- | ------------ |
-| 1          | Rahul        |
-| 2          | Priya        |
-| 3          | Amit         |
-
----
-
-### Doctors
-
-| doctor_id | doctor_name | specialization |
-| --------- | ----------- | -------------- |
-| 101       | Dr. Mehta   | Cardiologist   |
-| 102       | Dr. Khan    | Neurologist    |
-
----
-
-### Appointments
-
-| appointment_id | patient_id | doctor_id |
-| -------------- | ---------- | --------- |
-| 1001           | 1          | 101       |
-
----
-
-# Benefits of 3NF
-
-### No Data Redundancy
-
-Before:
-
-```text
-Dr. Mehta repeated many times
-```
-
-After:
-
-```text
-Stored only once
-```
-
----
-
-### Easy Updates
-
-Change specialization:
-
-```sql
-UPDATE doctors
-SET specialization='Heart Specialist'
-WHERE doctor_id=101;
-```
-
-Only one row updated.
-
----
-
-### No Insert Anomaly
-
-Add new doctor:
-
-```sql
-INSERT INTO doctors
-VALUES
-(105,'Dr. Roy','ENT');
-```
-
-Possible even without patients.
-
----
-
-### No Delete Anomaly
-
-Delete patient:
-
-```sql
-DELETE FROM patients
-WHERE patient_id=1;
-```
-
-Doctor information remains safe.
-
----
-
-# View Complete Data Using JOIN
-
-```sql
-SELECT
-p.patient_name,
-d.doctor_name,
-d.specialization
-FROM patients p
-INNER JOIN appointments a
-ON p.patient_id = a.patient_id
-INNER JOIN doctors d
-ON a.doctor_id = d.doctor_id;
-```
-
----
-
-# Output
-
-| patient_name | doctor_name | specialization |
-| ------------ | ----------- | -------------- |
-| Rahul        | Dr. Mehta   | Cardiologist   |
-| Rahul        | Dr. Khan    | Neurologist    |
-| Priya        | Dr. Patel   | Orthopedic     |
-| Amit         | Dr. Khan    | Neurologist    |
-| Amit         | Dr. Sharma  | Dermatologist  |
-
----
-
-# Quick Revision
-
-| Form | Rule                              |
-| ---- | --------------------------------- |
-| UNF  | Multiple values allowed in a cell |
-| 1NF  | Atomic values only                |
-| 2NF  | Remove partial dependency         |
-| 3NF  | Remove transitive dependency      |
-
----
-
-# Interview Questions
-
-### What is Normalization?
-
-A process of organizing data to reduce redundancy and improve consistency.
-
----
-
-### What is 1NF?
-
-Each column contains only a single value.
-
----
-
-### What is 2NF?
-
-1NF + No Partial Dependency.
-
----
-
-### What is 3NF?
-
-2NF + No Transitive Dependency.
-
----
-
-### What are the advantages of Normalization?
-
-* Reduced Redundancy
-* Better Consistency
-* Easier Maintenance
-* Improved Data Integrity
-* Better Database Design
-
----
-
-# Final Flow to Teach in Class
-
-```text
-UNF
- ↓
-1NF
- ↓
-2NF
- ↓
-3NF
- ↓
-Final Hospital Database Design
- ↓
-JOIN Queries
-```
+(1NF → 2NF → 3NF) 🚀
