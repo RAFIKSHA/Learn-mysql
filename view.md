@@ -1,5 +1,5 @@
 
-# SQL VIEW – Complete Teaching Flow
+# SQL VIEW –
 
 ## What is a View?
 
